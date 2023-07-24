@@ -1,0 +1,35 @@
+{
+  "name": "tansilu/tslopensdk",
+  "description": "低碳数据开放平台PHP SDK",
+  "version": "0.3.4",
+  "type": "library",
+  "keywords": [
+    "tslopensdk"
+  ],
+  "homepage": "https://open.tsl3060.com",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "shengli",
+      "email": "mothz@126.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.4",
+    "ext-openssl": "*",
+    "guzzlehttp/guzzle": "^6.5.8",
+    "ext-json": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "com\\tsl3060\\open\\sdk\\": "src/",
+      "tests\\": "tests/"
+    }
+  },
+  "extra": {
+    "exclude-from-classmap": ["*.git","*.gitignore"]
+  },
+  "config": {
+    "git": false
+  }
+}
