@@ -15,6 +15,8 @@ use com\tsl3060\open\sdk\secure\SecureTool;
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Exception\GuzzleException;
+use MongoDB\BSON\ObjectId;
+use RuntimeException;
 
 /**
  * OpenAPI SDK
@@ -78,6 +80,31 @@ class ApiClient
             ]);
         }
         return $this->client;
+    }
+
+    /**
+     * 执行请求
+     * @param IApiRequest $request
+     * @return ApiResponse|null
+     * @throws GuzzleException
+     */
+    public function requestPayload(IApiRequest $request): ?ApiResponse
+    {
+        $apiRequest = $this->pack($request->path(), $request);
+        return $this->request($apiRequest);
+    }
+
+    private function pack(string $path, object $data): ApiRequest
+    {
+        $apiRequest = new ApiRequest();
+        $apiRequest->setPath($path);
+        $apiRequest->setCharset($this->config->getCharset());
+        $apiRequest->setTime(date($this->config->getDateFormat()));
+        $apiRequest->setSignType($this->config->getSignType());
+        $apiRequest->setPayload($data);
+        $apiRequest->setAccessToken("");
+        $apiRequest->setAppId($this->config->getAppId());
+        return $apiRequest;
     }
 
     /**
@@ -321,7 +348,7 @@ class ApiClient
                 }
                 break;
             case '/v1/wallet/carbon':
-                $this->log("AD %s","123");
+                $this->log("AD %s", "123");
                 $payload = new TanSiLuWalletCarbonPayload();
                 $payload->setToken($requestPayload->token);
                 $payload->setOpenid($requestPayload->openid);
@@ -333,7 +360,7 @@ class ApiClient
                 $payload->setNewEnergy($requestPayload->new_energy);
                 $payload->setCompleteTime($requestPayload->complete_time ?? '');
                 $payload->setOrderPay($requestPayload->order_pay);
-                $payload->setBehavior($requestPayload->behavior??'');
+                $payload->setBehavior($requestPayload->behavior ?? '');
                 try {
                     $tanCarbon = $listener->walletCarbon($payload);
                     $resp->setResult(self::RESULT_OK);
