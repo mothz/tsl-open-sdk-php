@@ -11,6 +11,8 @@ use com\tsl3060\open\sdk\objs\TanSiLuRegister;
 use com\tsl3060\open\sdk\objs\TanSiLuRegisterPayload;
 use com\tsl3060\open\sdk\objs\TanSiLuSmsSend;
 use com\tsl3060\open\sdk\objs\TanSiLuSmsSendPayload;
+use com\tsl3060\open\sdk\objs\TanSiLuVideoCompressedAnswer;
+use com\tsl3060\open\sdk\objs\TanSiLuVideoCompressedPayload;
 use com\tsl3060\open\sdk\objs\TanSiLuWalletCarbon;
 use com\tsl3060\open\sdk\objs\TanSiLuWalletCarbonPayload;
 use com\tsl3060\open\sdk\objs\TanSiLuWalletQuery;
@@ -69,4 +71,7 @@ interface INotifyListener
      * @return TanSiLuWalletCarbon
      */
     function walletCarbon(TanSiLuWalletCarbonPayload $payload): TanSiLuWalletCarbon;
+
+
+    function compressed(TanSiLuVideoCompressedPayload $payload): TanSiLuVideoCompressedAnswer;
 }
