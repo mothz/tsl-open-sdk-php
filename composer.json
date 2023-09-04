@@ -1,7 +1,7 @@
 {
   "name": "tansilu/tslopensdk",
   "description": "低碳数据开放平台PHP SDK",
-  "version": "0.3.6",
+  "version": "0.3.7",
   "type": "library",
   "keywords": [
     "tslopensdk"
@@ -17,7 +17,7 @@
   "require": {
     "php": ">=7.4",
     "ext-openssl": "*",
-    "guzzlehttp/guzzle": "^7.7.0",
+    "guzzlehttp/guzzle": ">=6.5.8",
     "ext-json": "*"
   },
   "require-dev": {
