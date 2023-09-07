@@ -21,7 +21,26 @@ class VideoCompressedPayload extends RequestPayload implements IApiRequest
     /**
      * @var string 保存路径
      */
-    public string $path;
+    public string $ossPath;
+
+    public string $platform;
+
+    /**
+     * @return string
+     */
+    public function getPlatform(): string
+    {
+        return $this->platform;
+    }
+
+    /**
+     * @param string $platform
+     */
+    public function setPlatform(string $platform): void
+    {
+        $this->platform = $platform;
+    }
+
 
     /**
      * @return string 请求地址
@@ -93,6 +112,22 @@ class VideoCompressedPayload extends RequestPayload implements IApiRequest
     public function setPath(string $path): void
     {
         $this->path = $path;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOssPath(): string
+    {
+        return $this->ossPath;
+    }
+
+    /**
+     * @param string $ossPath
+     */
+    public function setOssPath(string $ossPath): void
+    {
+        $this->ossPath = $ossPath;
     }
 
 
