@@ -162,8 +162,12 @@ class ApiRequest
     /**
      * @param mixed $payload
      */
-    public function setPayload($payload): void
+    public function setPayload(IApiRequest $payload): void
     {
+        if ($payload->path()) {
+            //使用载体配置的路径
+            $this->setPath($payload->path());
+        }
         $this->payload = $payload;
     }
 
