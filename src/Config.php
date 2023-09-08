@@ -55,6 +55,11 @@ class Config
     private string $dateFormat = "Y-m-d H:i:s";
 
     /**
+     * @var bool 是否为调试模式
+     */
+    private bool $debug = false;
+
+    /**
      * @return string
      */
     public function getDateFormat(): string
@@ -200,5 +205,23 @@ class Config
     {
         $this->host = $host;
     }
+
+    /**
+     * @return bool
+     */
+    public function isDebug(): bool
+    {
+        return $this->debug;
+    }
+
+    /**
+     * @param bool $debug
+     */
+    public function setDebug(bool $debug): void
+    {
+        $this->debug = $debug;
+    }
+
+
 
 }
