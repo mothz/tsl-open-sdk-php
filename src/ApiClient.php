@@ -73,7 +73,7 @@ class ApiClient
             $this->client = new Client([
                 'base_uri' => $this->config->getHost(),
                 'connect_timeout' => 5,
-                'debug' => true,
+                'debug' => $this->config->isDebug(),
                 'cookies' => $jar,
                 'read_timeout' => 5,
                 'timeout' => 5
