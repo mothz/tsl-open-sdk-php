@@ -8,6 +8,7 @@ use com\tsl3060\open\sdk\objs\TanSiLuLoginPayload;
 use com\tsl3060\open\sdk\objs\TanSiLuOpenidBindPayload;
 use com\tsl3060\open\sdk\objs\TanSiLuRegisterPayload;
 use com\tsl3060\open\sdk\objs\TanSiLuSmsSendPayload;
+use com\tsl3060\open\sdk\objs\TanSiLuVideoCompressedPayload;
 use com\tsl3060\open\sdk\objs\TanSiLuWalletCarbonPayload;
 use com\tsl3060\open\sdk\objs\TanSiLuWalletQueryPayload;
 use com\tsl3060\open\sdk\secure\RSASecure;
@@ -348,7 +349,6 @@ class ApiClient
                 }
                 break;
             case '/v1/wallet/carbon':
-                $this->log("AD %s", "123");
                 $payload = new TanSiLuWalletCarbonPayload();
                 $payload->setToken($requestPayload->token);
                 $payload->setOpenid($requestPayload->openid);
@@ -368,6 +368,22 @@ class ApiClient
                 } catch (exception\ExecuteException $e) {
                     $resp->setResult($e->getResult());
                 }
+                break;
+            case "/v1/file/video/compressed":
+                $payload = new TanSiLuVideoCompressedPayload();
+                $payload->setId($requestPayload->id);
+                $payload->setStatus($requestPayload->status);
+                $payload->setResult($requestPayload->result);
+                $payload->setPayload($requestPayload->payload);
+
+                try {
+                    $tanCompress = $listener->compressed($payload);
+                    $resp->setResult(self::RESULT_OK);
+                    $resp->setPayload($tanCompress);
+                }catch (exception\ExecuteException $e) {
+                    $resp->setResult($e->getResult());
+                }
+
                 break;
             default:
                 $resp->setResult(self::RESULT_FAIL);
