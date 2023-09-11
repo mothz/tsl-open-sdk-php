@@ -191,8 +191,8 @@ class ApiClient
 
     private function log($format, ...$args)
     {
-//        $bu = sprintf($format, ...$args);
-//        file_put_contents('php://stdout', $bu . "\r\n");
+        $bu = sprintf($format, ...$args);
+        file_put_contents('php://stdout', $bu . "\r\n");
     }
 
 
@@ -370,11 +370,12 @@ class ApiClient
                 }
                 break;
             case "/v1/file/video/compressed":
+                $this->log(json_encode($requestPayload));
                 $payload = new TanSiLuVideoCompressedPayload();
                 $payload->setId($requestPayload->id);
                 $payload->setStatus($requestPayload->status);
                 $payload->setResult($requestPayload->result);
-                $payload->setPayload($requestPayload->payload);
+                $payload->setPayload(empty($requestPayload->payload)?"":$requestPayload->payload);
 
                 try {
                     $tanCompress = $listener->compressed($payload);
