@@ -30,7 +30,7 @@ interface ISecure
      * @param NotifyResponse $notifyResponse
      * @return mixed
      */
-    function notifySign(NotifyResponse $notifyResponse): ?string;
+    function notifyAnswerSign(NotifyResponse $notifyResponse): ?string;
 
     /**
      * 验证同步返回验签

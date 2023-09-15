@@ -4,16 +4,15 @@ namespace com\tsl3060\open\sdk\objs;
 
 class TanSiLuWalletCarbonPayload
 {
-    public string $token;
     public string $openid;
     /**
      * @var string 订单号
      */
     public string $orderNo;
     /**
-     * @var float 公里数
+     * @var string 公里数
      */
-    public float $mileage;
+    public string $mileage;
     /**
      * @var string 订单创建时间
      */
@@ -35,30 +34,14 @@ class TanSiLuWalletCarbonPayload
      */
     public string $completeTime;
     /**
-     * @var float 订单金额
+     * @var string 订单金额
      */
-    public float $orderPay;
+    public string $orderPay;
 
     /**
      * @var ?string 打车行为
      */
     public ?string $behavior="";
-
-    /**
-     * @return string
-     */
-    public function getToken(): string
-    {
-        return $this->token;
-    }
-
-    /**
-     * @param string $token
-     */
-    public function setToken(string $token): void
-    {
-        $this->token = $token;
-    }
 
     /**
      * @return string
@@ -93,17 +76,17 @@ class TanSiLuWalletCarbonPayload
     }
 
     /**
-     * @return float
+     * @return string
      */
-    public function getMileage(): float
+    public function getMileage(): string
     {
         return $this->mileage;
     }
 
     /**
-     * @param float $mileage
+     * @param string $mileage
      */
-    public function setMileage(float $mileage): void
+    public function setMileage(string $mileage): void
     {
         $this->mileage = $mileage;
     }
@@ -189,31 +172,31 @@ class TanSiLuWalletCarbonPayload
     }
 
     /**
-     * @return float
+     * @return string
      */
-    public function getOrderPay(): float
+    public function getOrderPay(): string
     {
         return $this->orderPay;
     }
 
     /**
-     * @param float $orderPay
+     * @param string $orderPay
      */
-    public function setOrderPay(float $orderPay): void
+    public function setOrderPay(string $orderPay): void
     {
         $this->orderPay = $orderPay;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getBehavior(): string
+    public function getBehavior(): ?string
     {
         return $this->behavior;
     }
 
     /**
-     * @param ?string $behavior
+     * @param string|null $behavior
      */
     public function setBehavior(?string $behavior): void
     {

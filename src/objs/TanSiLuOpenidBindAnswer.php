@@ -2,7 +2,7 @@
 
 namespace com\tsl3060\open\sdk\objs;
 
-class TanSiLuOpenidBind
+class TanSiLuOpenidBindAnswer
 {
     /**
      * @var string 用户OPENID

@@ -9,13 +9,13 @@ class TanSiLuWalletCarbon
      */
     public string $openid;
     /**
-     * @var float 本次增加的碳积分
+     * @var string 本次增加的碳积分
      */
-    public float $carbon=0.0;
+    public string $carbon='0';
     /**
-     * @var float 增加后的总碳积分
+     * @var string 增加后的总碳积分
      */
-    public float $total=0.0;
+    public string $total='0';
     /**
      * @var string 记录结果
      */
@@ -42,33 +42,33 @@ class TanSiLuWalletCarbon
     }
 
     /**
-     * @return float
+     * @return string
      */
-    public function getCarbon(): float
+    public function getCarbon(): string
     {
         return $this->carbon;
     }
 
     /**
-     * @param float $carbon
+     * @param string $carbon
      */
-    public function setCarbon(float $carbon): void
+    public function setCarbon(string $carbon): void
     {
         $this->carbon = $carbon;
     }
 
     /**
-     * @return float
+     * @return string
      */
-    public function getTotal(): float
+    public function getTotal(): string
     {
         return $this->total;
     }
 
     /**
-     * @param float $total
+     * @param string $total
      */
-    public function setTotal(float $total): void
+    public function setTotal(string $total): void
     {
         $this->total = $total;
     }
@@ -104,10 +104,4 @@ class TanSiLuWalletCarbon
     {
         $this->record_time = $record_time;
     }
-
-
-
-
-
-
 }
