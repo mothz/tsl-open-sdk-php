@@ -46,8 +46,10 @@ class RSASecure implements ISecure
             }else{
                 $payStrArr[] = $k . '=' . $v;
             }
+
         }
         $payStr = join('&', $payStrArr);
+
 
         return $payStr;
 
@@ -168,6 +170,7 @@ class RSASecure implements ISecure
             $response->getDescription() ?? '',
             $payStr
         );
+        //file_put_contents("php://stdout",$waitSign);
         return $this->responseServerVerify($waitSign, $response->getSign());
     }
 
@@ -176,7 +179,7 @@ class RSASecure implements ISecure
      * @param NotifyResponse $response
      * @return string|null
      */
-    function notifySign(NotifyResponse $response): ?string
+    function notifyAnswerSign(NotifyResponse $response): ?string
     {
         $payload = $response->getPayload();
         $payStr = $this->object2link($payload);
@@ -190,6 +193,7 @@ class RSASecure implements ISecure
             $response->getTime(),
             $payStr
         );
+
         return $this->sign($waitSign);
     }
 

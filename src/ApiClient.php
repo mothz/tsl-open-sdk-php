@@ -11,6 +11,7 @@ use com\tsl3060\open\sdk\objs\TanSiLuSmsSendPayload;
 use com\tsl3060\open\sdk\objs\TanSiLuVideoCompressedPayload;
 use com\tsl3060\open\sdk\objs\TanSiLuWalletCarbonPayload;
 use com\tsl3060\open\sdk\objs\TanSiLuWalletQueryPayload;
+use com\tsl3060\open\sdk\router\NotifyMapRouter;
 use com\tsl3060\open\sdk\secure\RSASecure;
 use com\tsl3060\open\sdk\secure\SecureTool;
 use GuzzleHttp\Client;
@@ -232,6 +233,8 @@ class ApiClient
     public const RESULT_OK = "ok";
     public const RESULT_FAIL = "fail";
 
+    private ?NotifyMapRouter $notifyMapRouter=null;
+
     /**
      * @param string $contentType
      * @param string $raw 接收的内容
@@ -241,6 +244,9 @@ class ApiClient
      */
     public function notifyRun(string $contentType, string $raw): NotifyResponse
     {
+        if ($this->notifyMapRouter == null) {
+            $this->notifyMapRouter = new NotifyMapRouter($this->notifyListener);
+        }
         $notify = new NotifyRequest();
         //解析
         if (strpos($contentType, 'json') > 0) {
@@ -272,131 +278,148 @@ class ApiClient
 
         $requestPayload = $notify->getPayload();
 
-        //分发
-        switch ($notify->getModule()) {
-            case "/v1/captcha/sms":
-                $payload = new TanSiLuSmsSendPayload();
-                $payload->setDevice($requestPayload->device ?? '');
-                $payload->setPhone($requestPayload->phone);
-                $payload->setIp($requestPayload->ip ?? '');
-                $payload->setEvent($requestPayload->event);
-                try {
-                    $tanSendResult = $listener->sms($payload);
-                    $resp->setResult(self::RESULT_OK);
-                    $resp->setPayload($tanSendResult);
-                } catch (exception\ExecuteException $e) {
-                    $resp->setResult($e->getResult());
-                }
-
-                break;
-            case "/v1/account/register":
-                //注册请求
-                $payload = new TanSiLuRegisterPayload();
-                $payload->setIp($requestPayload->ip ?? '');
-                $payload->setPhone($requestPayload->phone);
-                $payload->setSms($requestPayload->sms);
-                $payload->setForm($requestPayload->form ?? '');
-                $payload->setDevice($requestPayload->device ?? '');
-                try {
-                    $tanRegisterResult = $listener->register($payload);
-                    $resp->setResult(self::RESULT_OK);
-                    $resp->setPayload($tanRegisterResult);
-                } catch (exception\ExecuteException $e) {
-                    $resp->setResult($e->getResult());
-                }
-                break;
-            case "/v1/account/openid":
-                //账号绑定
-                $payload = new TanSiLuOpenidBindPayload();
-                $payload->setOpenid($requestPayload->openid);
-                $payload->setType($requestPayload->type);
-                $payload->setAccount($requestPayload->account);
-
-                try {
-                    $tanBindResult = $listener->openid($payload);
-                    $resp->setResult(self::RESULT_OK);
-                    $resp->setPayload($tanBindResult);
-                } catch (exception\ExecuteException $e) {
-                    $resp->setResult($e->getResult());
-                }
-                break;
-            case "/v1/account/login":
-                //账号登录
-                $payload = new TanSiLuLoginPayload();
-                $payload->setAccount($requestPayload->account);
-                $payload->setSms($requestPayload->sms);
-                $payload->setOpenid($requestPayload->openid);
-                $payload->setType($requestPayload->type);
-
-                try {
-                    $tanLogin = $listener->login($payload);
-                    $resp->setResult(self::RESULT_OK);
-                    $resp->setPayload($tanLogin);
-                } catch (exception\ExecuteException $e) {
-                    $resp->setResult($e->getResult());
-                }
-                break;
-            case '/v1/wallet/query':
-                $payload = new TanSiLuWalletQueryPayload();
-                $payload->setOpenid($requestPayload->openid);
-                $payload->setToken($requestPayload->token);
-                try {
-                    $tanQuery = $listener->walletQuery($payload);
-                    $resp->setResult(self::RESULT_OK);
-                    $resp->setPayload($tanQuery);
-                } catch (exception\ExecuteException $e) {
-                    $resp->setResult($e->getResult());
-                }
-                break;
-            case '/v1/wallet/carbon':
-                $payload = new TanSiLuWalletCarbonPayload();
-                $payload->setToken($requestPayload->token);
-                $payload->setOpenid($requestPayload->openid);
-                $payload->setOrderNo($requestPayload->order_no);
-                $payload->setMileage($requestPayload->mileage);
-                $payload->setOrderTime($requestPayload->order_time);
-                $payload->setOrderState($requestPayload->order_state);
-                $payload->setVehicleModel($requestPayload->vehicle_model);
-                $payload->setNewEnergy($requestPayload->new_energy);
-                $payload->setCompleteTime($requestPayload->complete_time ?? '');
-                $payload->setOrderPay($requestPayload->order_pay);
-                $payload->setBehavior($requestPayload->behavior ?? '');
-                try {
-                    $tanCarbon = $listener->walletCarbon($payload);
-                    $resp->setResult(self::RESULT_OK);
-                    $resp->setPayload($tanCarbon);
-                } catch (exception\ExecuteException $e) {
-                    $resp->setResult($e->getResult());
-                }
-                break;
-            case "/v1/file/video/compressed":
-                $this->log(json_encode($requestPayload));
-                $payload = new TanSiLuVideoCompressedPayload();
-                $payload->setId($requestPayload->id);
-                $payload->setStatus($requestPayload->status);
-                $payload->setResult($requestPayload->result);
-                $payload->setPayload(empty($requestPayload->payload)?"":$requestPayload->payload);
-
-                try {
-                    $tanCompress = $listener->compressed($payload);
-                    $resp->setResult(self::RESULT_OK);
-                    $resp->setPayload($tanCompress);
-                }catch (exception\ExecuteException $e) {
-                    $resp->setResult($e->getResult());
-                }
-
-                break;
-            default:
+        $notifyRouter = $this->notifyMapRouter->get($notify->getModule());
+        if ($notifyRouter != null) {
+            try {
+                $tanResult = $notifyRouter->makeBody($requestPayload);
+                $resp->setPayload($tanResult);
+                $resp->setResult(self::RESULT_OK);
+            } catch (exception\ExecuteException $exception) {
                 $resp->setResult(self::RESULT_FAIL);
-                break;
+            }
+
+        } else {
+            $resp->setResult(self::RESULT_FAIL);
         }
+
         //对数据签名
         $is = $this->getSecureTool()->getSecure($resp->getSignType());
-        $str = $is->notifySign($resp);
+        $str = $is->notifyAnswerSign($resp);
 
         $resp->setSign($str);
 
         return $resp;
     }
-
 }
+
+/**
+ *
+//分发
+switch ($notify->getModule()) {
+case "/v1/captcha/sms":
+$payload = new TanSiLuSmsSendPayload();
+$payload->setDevice($requestPayload->device ?? '');
+$payload->setPhone($requestPayload->phone);
+$payload->setIp($requestPayload->ip ?? '');
+$payload->setEvent($requestPayload->event);
+try {
+$tanSendResult = $listener->sms($payload);
+$resp->setResult(self::RESULT_OK);
+$resp->setPayload($tanSendResult);
+} catch (exception\ExecuteException $e) {
+$resp->setResult($e->getResult());
+}
+
+break;
+case "/v1/account/register":
+//注册请求
+$payload = new TanSiLuRegisterPayload();
+$payload->setIp($requestPayload->ip ?? '');
+$payload->setPhone($requestPayload->phone);
+$payload->setSms($requestPayload->sms);
+$payload->setForm($requestPayload->form ?? '');
+$payload->setDevice($requestPayload->device ?? '');
+try {
+$tanRegisterResult = $listener->register($payload);
+$resp->setResult(self::RESULT_OK);
+$resp->setPayload($tanRegisterResult);
+} catch (exception\ExecuteException $e) {
+$resp->setResult($e->getResult());
+}
+break;
+case "/v1/account/openid":
+//账号绑定
+$payload = new TanSiLuOpenidBindPayload();
+$payload->setOpenid($requestPayload->openid);
+$payload->setType($requestPayload->type);
+$payload->setAccount($requestPayload->account);
+
+try {
+$tanBindResult = $listener->openid($payload);
+$resp->setResult(self::RESULT_OK);
+$resp->setPayload($tanBindResult);
+} catch (exception\ExecuteException $e) {
+$resp->setResult($e->getResult());
+}
+break;
+case "/v1/account/login":
+//账号登录
+$payload = new TanSiLuLoginPayload();
+$payload->setAccount($requestPayload->account);
+$payload->setSms($requestPayload->sms);
+$payload->setOpenid($requestPayload->openid);
+$payload->setType($requestPayload->type);
+
+try {
+$tanLogin = $listener->login($payload);
+$resp->setResult(self::RESULT_OK);
+$resp->setPayload($tanLogin);
+} catch (exception\ExecuteException $e) {
+$resp->setResult($e->getResult());
+}
+break;
+case '/v1/wallet/query':
+$payload = new TanSiLuWalletQueryPayload();
+$payload->setOpenid($requestPayload->openid);
+$payload->setToken($requestPayload->token);
+try {
+$tanQuery = $listener->walletQuery($payload);
+$resp->setResult(self::RESULT_OK);
+$resp->setPayload($tanQuery);
+} catch (exception\ExecuteException $e) {
+$resp->setResult($e->getResult());
+}
+break;
+case '/v1/wallet/carbon':
+$payload = new TanSiLuWalletCarbonPayload();
+$payload->setToken($requestPayload->token);
+$payload->setOpenid($requestPayload->openid);
+$payload->setOrderNo($requestPayload->order_no);
+$payload->setMileage($requestPayload->mileage);
+$payload->setOrderTime($requestPayload->order_time);
+$payload->setOrderState($requestPayload->order_state);
+$payload->setVehicleModel($requestPayload->vehicle_model);
+$payload->setNewEnergy($requestPayload->new_energy);
+$payload->setCompleteTime($requestPayload->complete_time ?? '');
+$payload->setOrderPay($requestPayload->order_pay);
+$payload->setBehavior($requestPayload->behavior ?? '');
+try {
+$tanCarbon = $listener->walletCarbon($payload);
+$resp->setResult(self::RESULT_OK);
+$resp->setPayload($tanCarbon);
+} catch (exception\ExecuteException $e) {
+$resp->setResult($e->getResult());
+}
+break;
+case "/v1/file/video/compressed":
+$this->log(json_encode($requestPayload));
+$payload = new TanSiLuVideoCompressedPayload();
+$payload->setId($requestPayload->id);
+$payload->setStatus($requestPayload->status);
+$payload->setResult($requestPayload->result);
+$payload->setPayload(empty($requestPayload->payload) ? "" : $requestPayload->payload);
+
+try {
+$tanCompress = $listener->compressed($payload);
+$resp->setResult(self::RESULT_OK);
+$resp->setPayload($tanCompress);
+} catch (exception\ExecuteException $e) {
+$resp->setResult($e->getResult());
+}
+
+break;
+default:
+$resp->setResult(self::RESULT_FAIL);
+break;
+}
+ */

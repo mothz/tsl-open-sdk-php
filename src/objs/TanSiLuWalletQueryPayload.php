@@ -4,24 +4,7 @@ namespace com\tsl3060\open\sdk\objs;
 
 class TanSiLuWalletQueryPayload
 {
-    public string $token;
     public string $openid;
-
-    /**
-     * @return string
-     */
-    public function getToken(): string
-    {
-        return $this->token;
-    }
-
-    /**
-     * @param string $token
-     */
-    public function setToken(string $token): void
-    {
-        $this->token = $token;
-    }
 
     /**
      * @return string
