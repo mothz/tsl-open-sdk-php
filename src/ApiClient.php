@@ -172,6 +172,7 @@ class ApiClient
             $apiResponse->setSubMsg($dResponse->sub_msg);
             $apiResponse->setSignType($dResponse->sign_type);
             $apiResponse->setPayload(empty($dResponse->payload) ? null : $dResponse->payload);
+            $apiResponse->setDescription($dResponse->description);
 
             $this->log($body);
             $iSecure = $this->getSecureTool()->getSecure($apiResponse->getSignType());
