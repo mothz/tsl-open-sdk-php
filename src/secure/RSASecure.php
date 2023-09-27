@@ -40,9 +40,9 @@ class RSASecure implements ISecure
             if (is_bool($v)) {
                 $payStrArr[] = $k . '=' . ($v ? 'true' : 'false');
             } elseif (is_double($v)) {
-                $payStrArr[] = $k . '=' . (sprintf('%.2f', $v));
+                $payStrArr[] = $k . '=' . (floatval($v));
             }elseif(is_float($v)){
-                $payStrArr[] = $k . '=' . (sprintf('%.2f', $v));
+                $payStrArr[] = $k . '=' . (floatval( $v));
             }else{
                 $payStrArr[] = $k . '=' . $v;
             }

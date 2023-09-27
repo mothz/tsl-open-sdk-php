@@ -60,6 +60,11 @@ class Config
     private bool $debug = false;
 
     /**
+     * @var int 连接超时时间
+     */
+    private int $timeout = 5000;
+
+    /**
      * @return string
      */
     public function getDateFormat(): string
@@ -221,6 +226,28 @@ class Config
     {
         $this->debug = $debug;
     }
+
+    public function useSandBox()
+    {
+        $this->setHost("https://opendev.tsl3060.com");
+    }
+
+    /**
+     * @return int
+     */
+    public function getTimeout(): int
+    {
+        return $this->timeout;
+    }
+
+    /**
+     * @param int $timeout
+     */
+    public function setTimeout(int $timeout): void
+    {
+        $this->timeout = $timeout;
+    }
+
 
 
 
