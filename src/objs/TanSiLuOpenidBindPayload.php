@@ -4,13 +4,43 @@ namespace com\tsl3060\open\sdk\objs;
 
 class TanSiLuOpenidBindPayload
 {
+    /**
+     * @var string 手机号
+     */
+    public string $phone;
+    /**
+     * @var string 用户账号
+     */
     public string $account;
+    /**
+     * @var string 用户OpenID
+     */
     public string $openid;
+    /**
+     * @var string 账号类型
+     */
     public string $type;
     /**
      * @var string 用户类型
      */
     public string $userType;
+
+    /**
+     * @return string
+     */
+    public function getPhone(): string
+    {
+        return $this->phone;
+    }
+
+    /**
+     * @param string $phone
+     */
+    public function setPhone(string $phone): void
+    {
+        $this->phone = $phone;
+    }
+
 
     /**
      * @return string

@@ -32,7 +32,7 @@ class TanSiLuOpenidBindRouter implements \com\tsl3060\open\sdk\router\INotifyRou
         $bind->setType($payload->type);
         $bind->setAccount($payload->account);
         $bind->setUserType($payload->userType);
-
+        $bind->setPhone($payload->phone);
 
         return $this->listener->openid($bind);
     }
