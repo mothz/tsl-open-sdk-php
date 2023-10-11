@@ -25,12 +25,13 @@ class TanSiLuOpenidBindRouter implements \com\tsl3060\open\sdk\router\INotifyRou
     /**
      * @throws ExecuteException
      */
-    function makeBody(object $payload):TanSiLuOpenidBindAnswer
+    function makeBody(object $payload): TanSiLuOpenidBindAnswer
     {
         $bind = new TanSiLuOpenidBindPayload();
         $bind->setOpenid($payload->openid);
         $bind->setType($payload->type);
         $bind->setAccount($payload->account);
+        $bind->setUserType($payload->userType);
 
 
         return $this->listener->openid($bind);

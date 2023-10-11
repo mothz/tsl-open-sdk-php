@@ -7,6 +7,27 @@ class TanSiLuOpenidBindPayload
     public string $account;
     public string $openid;
     public string $type;
+    /**
+     * @var string 用户类型
+     */
+    public string $userType;
+
+    /**
+     * @return string
+     */
+    public function getUserType(): string
+    {
+        return $this->userType;
+    }
+
+    /**
+     * @param string $userType
+     */
+    public function setUserType(string $userType): void
+    {
+        $this->userType = $userType;
+    }
+
 
     /**
      * @return string
