@@ -151,7 +151,8 @@ class ApiClient
                 'charset' => $apiRequest->getCharset(),
                 'time' => $apiRequest->getTime(),
                 'payload' => $apiRequest->getPayload()
-            ]
+            ],
+            'debug'=>false
         ]);
         if ($response->getStatusCode() == 200) {
             $body = $response->getBody();

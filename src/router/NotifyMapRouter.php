@@ -10,6 +10,7 @@ use com\tsl3060\open\sdk\router\notify\TanSiLuRegisterRouter;
 use com\tsl3060\open\sdk\router\notify\TanSiLuSmsSendRouter;
 use com\tsl3060\open\sdk\router\notify\TanSiLuWalletCarbonRouter;
 use com\tsl3060\open\sdk\router\notify\TanSiLuWalletQueryRouter;
+use com\tsl3060\open\sdk\router\notify\TanSiLuWanShunUserRelationRouter;
 
 class NotifyMapRouter
 {
@@ -33,6 +34,10 @@ class NotifyMapRouter
         //视频压缩
         $tanSiLuCompressedRouter = new TanSiLuCompressedRouter($listener);
         $this->map[$tanSiLuCompressedRouter->path()] = $tanSiLuCompressedRouter;
+
+        //万顺用户关系变更
+        $wanshunUserRelationRouter=new TanSiLuWanShunUserRelationRouter($listener);
+        $this->map[$wanshunUserRelationRouter->path()]=$wanshunUserRelationRouter;
 
     }
 

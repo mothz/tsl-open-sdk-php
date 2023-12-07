@@ -11,6 +11,8 @@ use com\tsl3060\open\sdk\objs\TanSiLuWalletCarbon;
 use com\tsl3060\open\sdk\objs\TanSiLuWalletCarbonPayload;
 use com\tsl3060\open\sdk\objs\TanSiLuWalletQuery;
 use com\tsl3060\open\sdk\objs\TanSiLuWalletQueryPayload;
+use com\tsl3060\open\sdk\objs\TanSiLuWanShunUserRelation;
+use com\tsl3060\open\sdk\objs\TanSiLuWanShunUserRelationPayload;
 
 /**
  * 通知事件监听
@@ -47,4 +49,11 @@ interface INotifyListener
      * @return TanSiLuVideoCompressedAnswer
      */
     function compressed(TanSiLuVideoCompressedPayload $payload): TanSiLuVideoCompressedAnswer;
+
+    /**
+     * 万顺用户关系调整
+     * @param TanSiLuWanShunUserRelationPayload $payload
+     * @return TanSiLuWanShunUserRelation
+     */
+    function wanshunUserRelation(TanSiLuWanShunUserRelationPayload $payload): TanSiLuWanShunUserRelation;
 }
