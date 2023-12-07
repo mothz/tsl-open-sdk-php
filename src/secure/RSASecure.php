@@ -28,30 +28,30 @@ class RSASecure implements ISecure
         if (!$payload) {
             return "";
         }
-        $payloadArr = [];
-        foreach ($payload as $k => $v) {
-            $payloadArr[$k] = $v;
-        }
-        //排序
-        ksort($payloadArr, SORT_NATURAL);
-
         $payStrArr = [];
-        foreach ($payloadArr as $k => $v) {
+        foreach ($payload as $k => $v) {
+
             if (is_bool($v)) {
                 $payStrArr[] = $k . '=' . ($v ? 'true' : 'false');
-            } elseif (is_double($v)) {
-                $payStrArr[] = $k . '=' . (floatval($v));
-            }elseif(is_float($v)){
-                $payStrArr[] = $k . '=' . (floatval( $v));
-            }else{
+            }elseif (is_numeric($v)) {
+                $payStrArr[] = $k . '=' . strval($v);
+            }elseif(is_string($v)){
+                $payStrArr[] = $k . '=' . strval($v);
+            }elseif(is_object($v)){
+                $payStrArr[]=$k.'='.$this->object2link($v);
+            }elseif(is_array($v)){
+                $arrayValues=[];
+                foreach ($v as $cv){
+                    $arrayValues[]=$this->object2link($cv);
+                }
+                $payStrArr[]=$k.'='.join(',',$arrayValues);
+            } else{
                 $payStrArr[] = $k . '=' . $v;
             }
-
         }
-        $payStr = join('&', $payStrArr);
-
-
-        return $payStr;
+        //排序
+        sort($payStrArr,SORT_NATURAL);
+        return join('&', $payStrArr);
 
     }
 
@@ -170,7 +170,6 @@ class RSASecure implements ISecure
             $response->getDescription() ?? '',
             $payStr
         );
-        //file_put_contents("php://stdout",$waitSign);
         return $this->responseServerVerify($waitSign, $response->getSign());
     }
 
