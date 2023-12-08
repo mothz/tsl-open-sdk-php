@@ -9,9 +9,9 @@ class TanSiLuWanShunUserRelationPayload
 {
     public string $openid;
 
-    public UserItem $parent;
+    public ?UserItem $parent=null;
 
-    public array $child;
+    public ?array $child=[];
 
     /**
      * @return string
@@ -30,36 +30,35 @@ class TanSiLuWanShunUserRelationPayload
     }
 
     /**
-     * @return UserItem
+     * @return ?UserItem
      */
-    public function getParent(): UserItem
+    public function getParent(): ?UserItem
     {
         return $this->parent;
     }
 
     /**
-     * @param UserItem $parent
+     * @param ?UserItem $parent
      */
-    public function setParent(UserItem $parent): void
+    public function setParent(?UserItem $parent): void
     {
         $this->parent = $parent;
     }
 
     /**
-     * @return array
+     * @return ?array
      */
-    public function getChild(): array
+    public function getChild(): ?array
     {
         return $this->child;
     }
 
     /**
-     * @param array $child
+     * @param ?array $child
      */
-    public function setChild(array $child): void
+    public function setChild(?array $child): void
     {
         $this->child = $child;
     }
-
 
 }
