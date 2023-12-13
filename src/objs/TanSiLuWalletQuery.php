@@ -9,9 +9,15 @@ class TanSiLuWalletQuery
      */
     public string $openid;
     /**
-     * @var string 碳积分
+     * @var string 低碳积分
      */
     public string $carbon;
+
+    /**
+     * @var string 绿色积分
+     */
+    public string $integral;
+
     /**
      * @var string 查询结果
      */
@@ -64,6 +70,24 @@ class TanSiLuWalletQuery
     {
         $this->query = $query;
     }
+
+    /**
+     * @return string
+     */
+    public function getIntegral(): string
+    {
+        return $this->integral;
+    }
+
+    /**
+     * @param string $integral
+     */
+    public function setIntegral(string $integral): void
+    {
+        $this->integral = $integral;
+    }
+
+
 
 
 }
