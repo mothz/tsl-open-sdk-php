@@ -4,7 +4,7 @@ namespace com\tsl3060\open\sdk\payload;
 
 class RequestPayload
 {
-    private string $source;
+    public string $source;
 
     /**
      * @return string
