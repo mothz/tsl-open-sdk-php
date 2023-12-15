@@ -47,7 +47,18 @@ class NotifyRequest
             $this->setSubMsg($data->sub_msg ?? '');
             $this->setTime($data->time);
             $this->setOpenId($data->openid ?? '');
-            $this->setPayload($data->payload ?? null);
+
+            $data->payload !== "" ? $this->setPayload($data->payload) : $this->setPayload(null);
+
+//            if($data->payload){
+//                if($data->payload==""){
+//                    $this->setPayload(null);
+//                }else{
+//                    $this->setPayload($data->payload);
+//                }
+//            }else{
+//                $this->setPayload(null);
+//            }
             $this->setSign($data->sign);
             $this->setSignType($data->sign_type ?? '');
             $this->setCharset($data->charset ?? '');

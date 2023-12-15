@@ -45,6 +45,49 @@ class TanSiLuWanShunValueRequestPayload extends RequestPayload implements IApiRe
      */
     public string $orderNo;
 
+
+    /**
+     * 变更科目
+     */
+    public string $subject;
+    /**
+     * 说明
+     */
+    public string $description;
+
+    /**
+     * @return string
+     */
+    public function getSubject(): string
+    {
+        return $this->subject;
+    }
+
+    /**
+     * @param string $subject
+     */
+    public function setSubject(string $subject): void
+    {
+        $this->subject = $subject;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     */
+    public function setDescription(string $description): void
+    {
+        $this->description = $description;
+    }
+
+
     /**
      * @return string
      */
