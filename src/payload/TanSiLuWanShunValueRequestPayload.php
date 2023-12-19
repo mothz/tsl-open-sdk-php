@@ -33,6 +33,10 @@ class TanSiLuWanShunValueRequestPayload extends RequestPayload implements IApiRe
      */
     public string $balance;
     /**
+     * @var string 发生前低碳值余额
+     */
+    public string $preBalance;
+    /**
      * @var string 发生的时间
      */
     public string $time;
@@ -41,10 +45,14 @@ class TanSiLuWanShunValueRequestPayload extends RequestPayload implements IApiRe
      */
     public ?string $fettle;
     /**
+     * @var ?string 万顺订单号
+     */
+    public ?string $orderNo;
+
+    /**
      * @var string 低碳值的订单号
      */
-    public string $orderNo;
-
+    public string $carbonNo;
 
     /**
      * 变更科目
@@ -203,17 +211,50 @@ class TanSiLuWanShunValueRequestPayload extends RequestPayload implements IApiRe
     /**
      * @return string
      */
-    public function getOrderNo(): string
+    public function getOrderNo(): ?string
     {
         return $this->orderNo;
     }
 
     /**
-     * @param string $orderNo
+     * @param ?string $orderNo
      */
-    public function setOrderNo(string $orderNo): void
+    public function setOrderNo(?string $orderNo): void
     {
         $this->orderNo = $orderNo;
     }
+
+    /**
+     * @return string
+     */
+    public function getPreBalance(): string
+    {
+        return $this->preBalance;
+    }
+
+    /**
+     * @param string $preBalance
+     */
+    public function setPreBalance(string $preBalance): void
+    {
+        $this->preBalance = $preBalance;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCarbonNo(): string
+    {
+        return $this->carbonNo;
+    }
+
+    /**
+     * @param string $carbonNo
+     */
+    public function setCarbonNo(string $carbonNo): void
+    {
+        $this->carbonNo = $carbonNo;
+    }
+
 
 }

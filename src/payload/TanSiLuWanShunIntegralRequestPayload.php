@@ -32,6 +32,11 @@ class TanSiLuWanShunIntegralRequestPayload extends RequestPayload implements IAp
      * @var string 发生后的积分余额
      */
     public string $balance;
+
+    /**
+     * @var string 发生前的积分余额
+     */
+    public string $preBalance;
     /**
      * @var string 发生的时间
      */
@@ -41,10 +46,13 @@ class TanSiLuWanShunIntegralRequestPayload extends RequestPayload implements IAp
      */
     public ?string $fettle;
     /**
+     * @var ?string 万顺订单号
+     */
+    public ?string $orderNo;
+    /**
      * @var string 积分的订单号
      */
-    public string $orderNo;
-
+    public string $integralNo;
 
 
     /**
@@ -215,5 +223,38 @@ class TanSiLuWanShunIntegralRequestPayload extends RequestPayload implements IAp
     {
         $this->orderNo = $orderNo;
     }
+
+    /**
+     * @return string
+     */
+    public function getPreBalance(): string
+    {
+        return $this->preBalance;
+    }
+
+    /**
+     * @param string $preBalance
+     */
+    public function setPreBalance(string $preBalance): void
+    {
+        $this->preBalance = $preBalance;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIntegralNo(): string
+    {
+        return $this->integralNo;
+    }
+
+    /**
+     * @param string $integralNo
+     */
+    public function setIntegralNo(string $integralNo): void
+    {
+        $this->integralNo = $integralNo;
+    }
+
 
 }
